@@ -34,6 +34,7 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/ProgramVersion.h>
+#include <Base/Reader.h>
 
 #include "FeaturePartBoolean.h"
 #include "TopoShapeOpCode.h"

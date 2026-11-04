@@ -23,10 +23,10 @@
 
 #pragma once
 
-#include <App/Property.h>
-#include <Base/Reader.h>
+#include <memory>
 
-#include "Materials.h"
+#include <App/Property.h>
+#include <Mod/Material/MaterialGlobal.h>
 
 namespace App
 {
@@ -35,6 +35,7 @@ class Material;
 
 namespace Materials
 {
+class Material;
 
 /** Material properties
  * This is the father of all properties handling colors.
@@ -79,22 +80,12 @@ public:
     Property* Copy() const override;
     void Paste(const Property& from) override;
 
-    unsigned int getMemSize() const override
-    {
-        return sizeof(_material);
-    }
+    unsigned int getMemSize() const override;
 
-    bool isSame(const Property& other) const override
-    {
-        if (&other == this) {
-            return true;
-        }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    bool isSame(const Property& other) const override;
 
 private:
-    Material _material;
+    std::unique_ptr<Material> _material;
 };
 
 }  // namespace Materials

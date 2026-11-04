@@ -28,6 +28,7 @@
 #include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
+#include <Mod/Material/App/Materials.h>
 
 #include "Body.h"
 #include "BodyPy.h"

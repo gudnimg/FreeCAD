@@ -36,6 +36,7 @@
 #include "TopoShapeOpCode.h"
 
 #include <Base/ProgramVersion.h>
+#include <Base/Reader.h>
 
 
 FC_LOG_LEVEL_INIT("Part", true, true);

@@ -76,6 +76,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/Materials.h>
 
 #include "Geometry.h"
 #include "PartFeature.h"

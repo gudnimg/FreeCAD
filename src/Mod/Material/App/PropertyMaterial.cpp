@@ -27,11 +27,13 @@
 
 
 #include <App/Application.h>
+#include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Gui/MetaTypes.h>
 
 #include "MaterialManager.h"
 #include "MaterialPy.h"
+#include "Materials.h"
 #include "PropertyMaterial.h"
 
 using namespace Materials;
@@ -40,32 +42,34 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::PropertyMaterial, App::Property)
 
-PropertyMaterial::PropertyMaterial() = default;
+PropertyMaterial::PropertyMaterial()
+    : _material(std::make_unique<Material>())
+{}
 
 PropertyMaterial::~PropertyMaterial() = default;
 
 void PropertyMaterial::setValue(const Material& mat)
 {
     aboutToSetValue();
-    _material = mat;
+    *_material = mat;
     hasSetValue();
 }
 
 void PropertyMaterial::setValue(const App::Material& mat)
 {
     aboutToSetValue();
-    _material = mat;
+    *_material = mat;
     hasSetValue();
 }
 
 const Material& PropertyMaterial::getValue() const
 {
-    return _material;
+    return *_material;
 }
 
 PyObject* PropertyMaterial::getPyObject()
 {
-    return new MaterialPy(new Material(_material));
+    return new MaterialPy(new Material(*_material));
 }
 
 void PropertyMaterial::setPyObject(PyObject* value)
@@ -83,7 +87,7 @@ void PropertyMaterial::setPyObject(PyObject* value)
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
     writer.Stream() << writer.ind() << "<PropertyMaterial uuid=\""
-                    << _material.getUUID().toStdString() << "\"/>" << std::endl;
+                    << _material->getUUID().toStdString() << "\"/>" << std::endl;
 }
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
@@ -106,14 +110,28 @@ const char* PropertyMaterial::getEditorName() const
 
 App::Property* PropertyMaterial::Copy() const
 {
-    PropertyMaterial* p = new PropertyMaterial();
-    p->_material = _material;
-    return p;
+    auto p = std::make_unique<PropertyMaterial>();
+    *p->_material = *_material;
+    return p.release();
 }
 
 void PropertyMaterial::Paste(const App::Property& from)
 {
     aboutToSetValue();
-    _material = dynamic_cast<const PropertyMaterial&>(from)._material;
+    *_material = *dynamic_cast<const PropertyMaterial&>(from)._material;
     hasSetValue();
+}
+
+unsigned int PropertyMaterial::getMemSize() const
+{
+    return sizeof(Material);
+}
+
+bool PropertyMaterial::isSame(const App::Property& other) const
+{
+    if (&other == this) {
+        return true;
+    }
+    return getTypeId() == other.getTypeId()
+        && getValue() == static_cast<const PropertyMaterial&>(other).getValue();
 }

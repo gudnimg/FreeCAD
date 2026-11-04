@@ -35,6 +35,7 @@
 #include "modelRefine.h"
 
 #include <Base/ProgramVersion.h>
+#include <Base/Reader.h>
 
 
 using namespace Part;

@@ -42,6 +42,7 @@
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/ProgramVersion.h>
+#include <Base/Reader.h>
 #include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"

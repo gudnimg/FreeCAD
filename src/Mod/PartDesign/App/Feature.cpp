@@ -45,6 +45,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
+#include <Mod/Material/App/Materials.h>
 
 #include "Feature.h"
 #include "FeaturePy.h"
